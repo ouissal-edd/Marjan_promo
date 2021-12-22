@@ -3,11 +3,13 @@ module.exports = {
     // create PDG
     // recevoir datat from controller and two parametre for error result filds
     create: (data, callBack) => {
-        sql = 'insert into pdg (nom_pdg,email_pdg,password_pdg) values(?,?,?)'
+        sql = 'insert into admin_centre (nom_admin,email_admin,password_admin,fkcentre) values(?,?,?,?)'
         connexion.query(sql, [
-                data.nom_pdg,
-                data.email_pdg,
-                data.password_pdg
+                data.nom_admin,
+                data.email_admin,
+                data.password_admin,
+                data.fkcentre
+
             ], (error, results, fields) => {
                 if (error) {
                     return callBack(error);
@@ -18,17 +20,7 @@ module.exports = {
         );
     },
 
-    // Create Admin Center
 
 
 
-    getUserByUserEmail: (email_pdg, callBack) => {
-        connexion.query('select * from pdg where email_pdg=?', [email_pdg],
-            (error, results, fields) => {
-                if (error) {
-                    callBack(error);
-                }
-                return callBack(null, results);
-            })
-    }
 }

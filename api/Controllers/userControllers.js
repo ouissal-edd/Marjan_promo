@@ -1,6 +1,5 @@
 const {
     create,
-    getUserByUserEmail
 } = require('../Models/User');
 
 const {
@@ -13,12 +12,18 @@ const {
 const {
     sign
 } = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 module.exports = {
+    // Create PDG
     createUser: (req, res) => {
         const body = req.body;
+        const log = body.email_admin;
+        const mailpass = body.password_admin;
+        const emailadmin = body.to;
+        const site = body.site;
         const salt = genSaltSync(10);
-        body.password_pdg = hashSync(body.password_pdg, salt);
+        body.password_admin = hashSync(body.password_admin, salt);
 
         create(body, (err, results) => {
             if (err) {
@@ -28,44 +33,40 @@ module.exports = {
                     message: 'Database connection error'
                 });
             }
-            return res.status(200).json({
-                success: 1,
-                data: results
+
+            // --------------------------
+
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.MAIL,
+                    pass: process.env.PASS
+                }
             });
+
+
+            let mailOptions = {
+                from: process.env.MAIL,
+                to: emailadmin,
+                subject: 'password access platform',
+                text: 'votre mot de passe est: ' + mailpass + ',votre email est: ' + log + ', accedez via cette plateforme: ' + site + ''
+
+            };
+            transporter.sendMail(mailOptions, (err, data) => {
+                if (err) {
+                    return console.log('Error occurs');
+                } else {
+                    console.log('mail sent')
+                }
+
+
+            });
+
+            // -----------------------------------
+
         });
     },
 
-    login: (req, res) => {
-        const body = req.body;
-        getUserByUserEmail(body.email_pdg, (err, results) => {
-            if (err) {
-                console.log(err);
-            }
-            if (!results) {
-                return res.json({
-                    success: 0,
-                    data: "Invalid email or password"
-                });
-            }
-            const result = compare(body.password_pdg, results.password_pdg);
-            if (result) {
-                results.password_pdg = undefined;
-                const jsontoken = sign({
-                    result: results
-                }, "qwe1234", {
-                    expiresIn: "1h"
-                });
-                return res.json({
-                    success: 1,
-                    message: "login successfully",
-                    token: jsontoken
-                });
-            } else {
-                return res.json({
-                    success: 0,
-                    data: "Invalid email or password"
-                });
-            }
-        });
-    }
+
+
 }
