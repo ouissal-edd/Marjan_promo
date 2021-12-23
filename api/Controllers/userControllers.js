@@ -1,5 +1,9 @@
 const {
     create,
+    getAllPromo,
+    getPromosValid,
+    getPromosNoValid,
+    deletePromo
 } = require('../Models/User');
 
 const {
@@ -66,6 +70,65 @@ module.exports = {
 
         });
     },
+    getPromos: (req, res) => {
+        getAllPromo((err, result) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    success: 0,
+                    message: "database connection error"
+                });
+            }
+            return res.status(200).json({
+                success: 1,
+                data: result
+            });
+        })
+    },
+    getStatistics: (req, res) => {
+        getPromosValid((err, result) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    success: 0,
+                    message: "database connection error"
+                });
+            }
+            getPromosNoValid((err, results) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({
+                        success: 0,
+                        message: "database connection error"
+                    });
+                }
+                console.log(result, results)
+                return res.status(200).json({
+                    success: 1,
+                    data: "Nombre des  promos valide " + result.valid + " Nombre de promos non valide : " + results.novalid + ""
+
+                });
+            })
+
+        })
+    },
+    deletePromos: (req, res) => {
+        const id = req.params.id;
+        deletePromo(id, (err, result) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    success: 0,
+                    message: "database connection error"
+                });
+            }
+            return res.status(200).json({
+                success: 1,
+                data: result
+            });
+        });
+    },
+
 
 
 

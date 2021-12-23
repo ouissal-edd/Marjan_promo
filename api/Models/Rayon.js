@@ -23,6 +23,24 @@ module.exports = {
 
         )
     },
+    validationPromotion: (data, callBack) => {
+        connexion.query(
+            'UPDATE promo_prod SET status=?,commentaire=? WHERE id_promo_prod=?',
+            [
+                data.status,
+                data.commentaire,
+                data.id_promo_prod
+
+            ],
+            (error, results, fields) => {
+                if (error) {
+                    return callBack(error);
+                }
+                return callBack(null, results);
+            }
+
+        )
+    },
 
 
 

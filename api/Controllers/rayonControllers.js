@@ -1,6 +1,7 @@
 const {
     getUserByUserEmail,
-    getPromo
+    getPromo,
+    validationPromotion
 } = require('../Models/Rayon');
 const {
     compare
@@ -63,6 +64,30 @@ module.exports = {
                     data: "invalid email or password"
                 })
             }
+        });
+    },
+
+
+    validPromotion: (req, res) => {
+        const body = req.body;
+        data = {
+            status: body.status,
+            commentaire: body.commentaire,
+            id_promo_prod: body.id_promo_prod
+        }
+
+        validationPromotion(data, (err, result) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    success: 0,
+                    message: "database connection error"
+                });
+            }
+            return res.status(200).json({
+                success: 1,
+                data: result
+            });
         });
     },
 
