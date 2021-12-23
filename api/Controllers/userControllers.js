@@ -17,7 +17,7 @@ const {
     sign
 } = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-
+const fs = require('fs');
 module.exports = {
     // Create PDG
     createUser: (req, res) => {
@@ -86,6 +86,7 @@ module.exports = {
         })
     },
     getStatistics: (req, res) => {
+
         getPromosValid((err, result) => {
             if (err) {
                 console.log(err);
@@ -103,11 +104,22 @@ module.exports = {
                     });
                 }
                 console.log(result, results)
+                let date_ob = new Date();
+                let date = date_ob.getDate();
+                let month = date_ob.getMonth();
+                let year = date_ob.getFullYear();
+                let hours = date_ob.getHours();
+                let minutes = date_ob.getMinutes();
+                let seconds = date_ob.getSeconds();
+                let dateDisplay = `${hours}-${minutes}-${seconds} ${month}-${date}-${year}`;
+                const resFs = "Nombre des  promos valide " + result.valid + " Nombre de promos non valide : " + results.novalid + "";
+                fs.writeFileSync("C:/wamp64/www/Marjan/public/" + dateDisplay + ".txt", resFs, 'utf8');
                 return res.status(200).json({
                     success: 1,
                     data: "Nombre des  promos valide " + result.valid + " Nombre de promos non valide : " + results.novalid + ""
 
                 });
+
             })
 
         })

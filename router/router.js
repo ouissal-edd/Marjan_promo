@@ -20,10 +20,10 @@ const {
 } = require('../auth/token_validation')
 
 // Action PDG
-router.post('/create', checkToken, createUser);
-router.get('/promos', checkToken, getPromos);
-router.get('/statistics', checkToken, getStatistics);
-router.delete('/delprom/:id', checkToken, deletePromos);
+router.post('/create', createUser);
+router.get('/promos', getPromos);
+router.get('/statistics', getStatistics);
+router.delete('/delprom/:id', deletePromos);
 
 
 
