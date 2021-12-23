@@ -10,6 +10,20 @@ module.exports = {
                 return callBack(null, results);
             })
     },
+    getPromo: (id, callBack) => {
+        connexion.query(
+            'SELECT * FROM promo_prod INNER JOIN promotion on promo_prod.fk_promo=promotion.id_promo INNER JOIN produit ON promo_prod.fk_prod=produit.id_prod where fk_rayon=?',
+            [id],
+            (error, results, fields) => {
+                if (error) {
+                    return callBack(error);
+                }
+                return callBack(null, results[0]);
+            }
+
+        )
+    },
+
 
 
 

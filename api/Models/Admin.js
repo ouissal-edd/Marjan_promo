@@ -2,11 +2,13 @@ const connexion = require('../../config/database');
 module.exports = {
     // Create promo
     create: (data, callBack) => {
-        sql = 'insert into promotion (remise,fk_admin,fk_rayon) values(?,?,?)'
+        sql = 'insert into promotion (remise,fk_admin,fk_rayon,fidelite) values(?,?,?,?)'
         connexion.query(sql, [
                 data.remise,
                 data.fk_admin,
-                data.fk_rayon
+                data.fk_rayon,
+                data.fidelite
+
             ], (error, results, fields) => {
                 if (error) {
                     return callBack(error);
@@ -22,7 +24,8 @@ module.exports = {
                 data.date_debut,
                 data.date_fin,
                 data.fk_prod,
-                data.fk_promo
+                data.fk_promo,
+
 
             ], (error, results, fields) => {
                 if (error) {

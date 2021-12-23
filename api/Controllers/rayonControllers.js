@@ -1,12 +1,14 @@
 const {
     getUserByUserEmail,
+    getPromo
 } = require('../Models/Rayon');
 const {
     compare
 
 } = require('bcrypt');
 const {
-    sign
+    sign,
+    decode
 } = require('jsonwebtoken');
 
 module.exports = {
@@ -30,11 +32,31 @@ module.exports = {
                 }, "qwe1234", {
                     expiresIn: "1h"
                 });
-                return res.json({
-                    success: 1,
-                    message: 'Admin Rayon has logged  succesfully',
-                    token: jsontoken
+
+                // Get Promotionn
+                var decoded = decode(jsontoken);
+                console.log(decoded.result[0].id_admin_rayon);
+
+                const id = decoded.result[0].id_admin_rayon;
+                getPromo(id, (err, reslt) => {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).json({
+                            success: 0,
+                            message: "database connection error"
+                        });
+                    }
+                    return res.status(200).json({
+                        success: 1,
+                        data: reslt,
+                        success: 1,
+                        message: 'Admin Rayon has logged  succesfully',
+                        token: jsontoken
+
+                    });
                 });
+                // -------------------------------
+
             } else {
                 return res.json({
                     success: 0,
@@ -42,6 +64,8 @@ module.exports = {
                 })
             }
         });
-    }
+    },
+
+
 
 }

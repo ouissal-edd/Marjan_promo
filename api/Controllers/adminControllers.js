@@ -22,6 +22,8 @@ module.exports = {
             remise: req.body.remise,
             fk_admin: req.body.fk_admin,
             fk_rayon: req.body.fk_rayon,
+            fidelite: (req.body.remise / 5) * 50
+
         }
 
         console.log(data);
@@ -39,7 +41,7 @@ module.exports = {
                     date_debut: req.body.date_debut,
                     date_fin: req.body.date_fin,
                     fk_prod: req.body.fk_prod,
-                    fk_promo: rslt
+                    fk_promo: rslt,
 
                 }
                 create_promo(data_prom, (err, results) => {
@@ -68,17 +70,8 @@ module.exports = {
         const emailadmin = body.to;
         const site = body.site;
 
-        // data_rayon = {
-        //     nom_admin_rayon: body.nom_admin_rayon,
-        //     email_admin_rayon: body.email_admin_rayon,
-        //     // password_admin_rayon: azerttt,
-        //     fk_centre: body.fk_centre,
-        //     fk_cat: body.fk_cat,
-        //     password_admin_rayon: body.psss,
 
-        // }
         console.log(body)
-        // http://localhost:3000/api/users/rayonUser
         const salt = genSaltSync(10);
         body.password_admin_rayon = hashSync(body.password_admin_rayon, salt);
         createUserRayon(body, (err, results) => {
