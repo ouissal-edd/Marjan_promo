@@ -34,16 +34,10 @@ router.post('/rayonUser', checkToken, createAdminRayon);
 router.post('/loginAdmin', checkToken, login);
 
 // Action Admin Rayon
-router.post('/loginRayon', checkToken, loginR);
+router.post('/loginRayon', loginR);
 router.patch('/validation', checkToken, validPromotion);
 
 
-
-
-// router.get('/', checkToken, getUsers);
-// router.get('/:id_pdg', getUserByUserId);
-// router.patch('/', updateUser);
-// router.delete('/', deleteUser);
 
 
 module.exports = router;
