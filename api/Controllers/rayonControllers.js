@@ -15,13 +15,13 @@ const {
 module.exports = {
     loginR: (req, res) => {
         let date_ob = new Date();
-        if (date_ob.getHours() >= 8 && date_ob.getHours() < 12) {
+        if (date_ob.getHours() >= 8 && date_ob.getHours() < 15) {
             const body = req.body;
             getUserByUserEmail(body.email_admin_rayon, (err, result) => {
                 if (err) {
                     console.log(err);
                 }
-                if (!result) {
+                if (result.length == 0) {
                     return res.json({
                         success: 0,
                         date: 'invalide email or password1'

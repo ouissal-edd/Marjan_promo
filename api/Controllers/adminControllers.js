@@ -124,7 +124,7 @@ module.exports = {
             if (err) {
                 console.log(err);
             }
-            if (!result) {
+            if (result.length == 0) {
                 return res.json({
                     success: 0,
                     date: 'invalide email or password1'
